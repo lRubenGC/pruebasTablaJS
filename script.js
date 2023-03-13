@@ -1,11 +1,40 @@
+let data = [];
+let table;
+
 window.onload = () => {
     document.getElementById("importButton").addEventListener("click", importData);
     document.getElementById("fileInput").addEventListener("change", importFile);
-    document.getElementById("sendToAPI").addEventListener("click", sendToAPI);
+    document.getElementById("sendToAPI").addEventListener("click", sendToAPI);		
 
-    
+	table = new Tabulator("#tabulator-table", {
+		data,
+		layout:"fitColumns",
+		addRowPos:"top",
+		history:true,             //allow undo and redo actions on the table
+		pagination:"local",       //paginate the data
+		paginationSize:10,
+		paginationCounter:"rows", //display count of paginated rows in footer
+		movableColumns:true,
+		columnDefaults:{
+			tooltip:true,         //show tool tips on cells
+		},
+		columns:[
+			{title:"Num", field:"num", width:70},
+			{title:"Target", field:"target"},
+			{title:"Remap", field:"remap", width:80},
+			{title:"Nome", field:"nome", width: 300},
+			{title:"SurveyId", field:"surveyid", width:120},
+			{title:"Status", field:"status", width:120},
+			{title:"Data inizio", field:"data_inizio", width:120, sorter:"date"},
+			{title:"Data fine", field:"data_fine", width:120, sorter:"date"},
+			{title:"var1", field:"var1"},
+			{title:"cod1", field:"cod1"},
+			{title:"var2", field:"var2"},
+			{title:"cod2", field:"cod2"}
+		],
+	});
+
 }
-let data = [];
 
 importData = async() => {
     try {
@@ -17,35 +46,36 @@ importData = async() => {
 
     // Validación: que todas las filas tengan 12 campos
     for (let i = 0; i < rows.length; i++) {
-        const row = rows[i].split("\t");
+		const row = rows[i].split("\t");
         if (row.length !== 12) {
             document.getElementById("label-error-excel").style.display = "inline-block";
             return;
         }
-        data.push(row)
-    }
-    
-    dataToTable();
 
-}
+        object = {
+			"num": row[0],
+			"target": row[1],
+			"remap": row[2],
+			"nome": row[3],
+			"surveyid": row[4],
+			"status": row[5],
+			"data_inizio": row[6],
+			"data_fine": row[7],
+			"var1": row[8],
+			"cod1": row[9],
+			"var2": row[10],
+			"cod2": row[11],
+		}
 
-dataToTable = () => {
-    for (let i = 0; i < data.length; i++) {
-        document.getElementById("label-error-excel").style.display = "none";
+		document.getElementById("label-error-excel").style.display = "none";
 
-        let tableRow = "<tr>";
-        for (let j = 0; j < data[i].length; j++) {
-            tableRow += `<td>${data[i][j]}</td>`;
-        }
-        tableRow += "</tr>";
-        document.getElementById("table-body").innerHTML += tableRow;
+		let currentData = table.getData();
+		currentData.push(object);
+		table.setData(currentData);
+		
+		document.getElementById("exportToCSV").addEventListener("click", exportTable);
     }
-    
-    if (dataTable) {
-        console.log("a")
-    }
-    dataTable = new DataTable("#forsta-table");
-    document.getElementById("exportToCSV").addEventListener("click", exportTable);
+
 }
 
 importFile = (event) => {
@@ -76,18 +106,12 @@ sendToAPI = () => {
 
 exportTable = () => {
     let csv = [];
-    const rows = document.querySelectorAll("#forsta-table tbody tr");
-
+    const rows = table.getData();
+	
     for (let i = 0; i < rows.length; i++) {
-        let row = [];
-        let cols = rows[i].querySelectorAll("td");
-
-        for (let j = 0; j < cols.length; j++) {
-            const cell = cols[j].innerText
-            if (cell !== "Send to API") row.push(cell);
-        }
+		console.log(rows[i])
         
-        csv.push(row.join(","));
+        // csv.push(rows[i].join(","));
     }
 
     const csvFile = new Blob([csv.join("\n")], {type: "text/csv"});
@@ -97,6 +121,6 @@ exportTable = () => {
     dw.href = window.URL.createObjectURL(csvFile);
     dw.style.display = "none";
     document.body.appendChild(dw);
-    dw.click();
+    // dw.click();
     document.body.removeChild(dw);
 }

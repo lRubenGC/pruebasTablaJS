@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "tabulator-tables": "^5.4.4",
     "vanilla-datatables": "^1.6.16"
   }
 }
