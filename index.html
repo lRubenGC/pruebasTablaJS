@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla Imported</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <!-- Libreria para importar archivos xlsx -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.8/xlsx.full.min.js"></script>
+    <!-- Vanilla Datatables -->
+    <script src="./node_modules/vanilla-datatables/dist/vanilla-dataTables.min.js"></script>
+    <link rel="stylesheet" href="./node_modules/vanilla-datatables/dist/vanilla-dataTables.min.css">
+    <!-- css y js del directorio -->
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h2>Tabla Forsta</h2>
+        <hr>
+    </div>
+    <div class="inputs d-flex flex-row justify-content-around mt-4">
+        <div class="form-group">
+            <label for="dataInput" class="label-import">Pegar desde portapapeles</label>
+            <button id="importButton" class="btn btn-primary">Importar</button>
+            <div id="label-error-excel" class="alert alert-danger label-error" role="alert">Formato incorrecto</div>
+        </div>
+    
+    
+        <div class="form-group">
+            <label for="fileInput" class="form-label label-import">Importar desde archivo Excel</label>
+            <input type="file" id="fileInput" accept=".xlsx, .xls" class="btn"/>
+        </div>
+    </div>
+    
+    
+    <div class="tabla">
+        <table id="forsta-table" class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Num</th>
+                    <th scope="col">Target</th>
+                    <th scope="col">Remap</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">SurveyId</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Data inizio</th>
+                    <th scope="col">Data fine</th>
+                    <th scope="col">var1</th>
+                    <th scope="col">cod1</th>
+                    <th scope="col">var2</th>
+                    <th scope="col">cod2</th>
+                </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+        <button id="exportToCSV" class="btn btn-warning">Exportar a CSV</button>
+        <button id="sendToAPI" class="btn btn-success actions">Send to API</button>
+    </div>
+</body>
+</html>

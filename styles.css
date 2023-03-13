@@ -1,0 +1,26 @@
+body {
+    margin: 20px;
+    font-size: 1em;
+}
+
+.tabla {
+    font-size: 0.9em;
+}
+
+#importButton {
+    margin: 0 5px 5px 5px;
+}
+
+.label-import {
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.label-error {
+    padding: 7px;
+    display: none;
+}
+
+#fileInput {
+    width: 350px;
+}
