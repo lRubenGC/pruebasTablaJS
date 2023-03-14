@@ -97,10 +97,10 @@ fileToTable = (data) => {
 }
 
 sendToAPI = () => {
-    const rows = document.querySelectorAll("#forsta-table tbody tr");
-    rows.forEach(row => {
-        console.log(`Registrando en API: ${row.innerText}`);
-    })
+    // const rows = document.querySelectorAll("#data-table tbody tr");
+    // rows.forEach(row => {
+    //     console.log(`Registrando en API: ${row.innerText}`);
+    // })
 
 }
 
@@ -116,7 +116,7 @@ exportTable = () => {
 	const csvFile = new Blob([csv.join("\n")], {type: "text/csv"});
     
     let dw = document.createElement("a");
-    dw.download = `forsta_table.csv`;
+    dw.download = `data_table.csv`;
     dw.href = window.URL.createObjectURL(csvFile);
     dw.style.display = "none";
     document.body.appendChild(dw);
