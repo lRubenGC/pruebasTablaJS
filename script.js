@@ -13,7 +13,7 @@ window.onload = () => {
 		addRowPos:"top",
 		history:true,             //allow undo and redo actions on the table
 		pagination:"local",       //paginate the data
-		paginationSize:10,
+		paginationSize:5,
 		paginationCounter:"rows", //display count of paginated rows in footer
 		movableColumns:true,
 		columnDefaults:{
@@ -39,6 +39,7 @@ window.onload = () => {
 
 importClipboard = async() => {
 	// Se vacia el campo de errores
+	document.getElementById("error-formato").innerHTML = "";
 	document.getElementById("errores").innerHTML = "";
 
 	// Se consigue data del portapapeles
@@ -51,25 +52,31 @@ importClipboard = async() => {
 
 	// VALIDACIONES
 	const dateFormat = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
+	let emptyRows = 0;
     for (let i = 0; i < rows.length; i++) {
 		const row = rows[i].split("\t");
 		
 		// Que todas las filas tengan 12 campos
         if (row.length !== 12) {
-			const error = `<div class="alert alert-danger label-error" role="alert">Formato incorrecto</div>`;
-			document.getElementById("errores").innerHTML += error;
+			const error = `<div id="label-error-formato" class="alert alert-danger" role="alert">Formato incorrecto</div>`;
+			document.getElementById("error-formato").innerHTML += error;
             return;
         }
 
+		// Si SurveyId viene vacío no se añade fila
+		if (!row[4]) {
+			emptyRows++;
+            continue;
+		}
 
-		// Validación: formato de fecha dd/mm/yyyy
+		// Formato de fecha dd/mm/yyyy
 		if (!row[6].match(dateFormat) || !row[7].match(dateFormat)) {
 			const error = `<div class="alert alert-danger label-error" role="alert">Fila ${row[0]} no introducida, formato de fecha inválido</div>`;
 			document.getElementById("errores").innerHTML += error;
             continue;
 		}
 
-		// Validación: fecha de inicio menor a fecha final
+		// Fecha de inicio menor a fecha final
 		const initDate = new Date(row[6]).getTime();
 		const finalDate = new Date(row[7]).getTime();
 		if (initDate > finalDate) {
@@ -103,6 +110,12 @@ importClipboard = async() => {
 		// Activar botón Send to API
 		document.getElementById("sendToAPI").addEventListener("click", sendToAPI);
     }
+
+	// Añadir alerta de error de filas vacías si la hay
+	if (emptyRows > 0) {
+		const error = `<div class="alert alert-danger label-error" role="alert">${emptyRows} fila/s no añadidas, surveyId no tiene datos</div>`;
+		document.getElementById("errores").innerHTML += error;
+	}
 
 }
 // NO FUNCIONA TODAVIA

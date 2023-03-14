@@ -3,6 +3,10 @@ body {
     font-size: 1em;
 }
 
+.inputs {
+    margin: 20px 0;
+}
+
 .tabla {
     font-size: 0.9em;
 }
@@ -16,10 +20,18 @@ body {
     font-weight: 600;
 }
 
-.label-error {
-    padding: 7px;
+#label-error-formato {
     text-align: center;
+    padding: 10px;
 }
+
+.label-error {
+    text-align: center;
+    margin: auto;
+    margin-top: 10px;
+    width: 40%;
+}
+
 
 #fileInput {
     width: 350px;

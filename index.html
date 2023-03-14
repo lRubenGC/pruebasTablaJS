@@ -23,11 +23,11 @@
         <h2>Tabla Datos</h2>
         <hr>
     </div>
-    <div class="inputs d-flex flex-row justify-content-around mt-4">
+    <div class="inputs d-flex flex-row justify-content-around">
         <div class="form-group">
             <label for="dataInput" class="label-import">Pegar desde portapapeles</label>
             <button id="importButton" class="btn btn-primary">Importar</button>
-            <div id="errores"></div>
+            <div id="error-formato"></div>
         </div>
     
     
@@ -42,6 +42,7 @@
         <div id="tabulator-table"></div>
         <button id="exportToCSV" class="btn btn-warning mt-2">Exportar a CSV</button>
         <button id="sendToAPI" class="btn btn-success actions mt-2">Send to API</button>
+        <div id="errores"></div>
     </div>
 </body>
 </html>
