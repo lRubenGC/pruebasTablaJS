@@ -2,10 +2,11 @@ let data = [];
 let table;
 
 window.onload = () => {
+	// Activar botones de importación
     document.getElementById("importButton").addEventListener("click", importClipboard);
     document.getElementById("fileInput").addEventListener("change", importXLSX);
-    document.getElementById("sendToAPI").addEventListener("click", sendToAPI);		
 
+	// Se crea la tabla con su configuración
 	table = new Tabulator("#tabulator-table", {
 		data,
 		layout:"fitColumns",
@@ -37,7 +38,10 @@ window.onload = () => {
 }
 
 importClipboard = async() => {
+	// Se vacia el campo de errores
 	document.getElementById("errores").innerHTML = "";
+
+	// Se consigue data del portapapeles
     try {
         clipboard = await navigator.clipboard.readText();
     } catch (err) {
@@ -94,12 +98,14 @@ importClipboard = async() => {
 		currentData.push(object);
 		table.setData(currentData);
 		
-		// Activar botón de exportar a CSV
+		// Activar botón Exportar a CSV
 		document.getElementById("exportToCSV").addEventListener("click", exportTable);
+		// Activar botón Send to API
+		document.getElementById("sendToAPI").addEventListener("click", sendToAPI);
     }
 
 }
-
+// NO FUNCIONA TODAVIA
 importXLSX = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -111,7 +117,7 @@ importXLSX = (event) => {
     }
     reader.readAsArrayBuffer(file);
 }
-
+// NO FUNCIONA TODAVIA
 fileToTable = (data) => {
     const obj = Object.keys(data)[8];
     console.log(obj);
@@ -119,14 +125,17 @@ fileToTable = (data) => {
 }
 
 sendToAPI = () => {
-    // const rows = document.querySelectorAll("#data-table tbody tr");
-    // rows.forEach(row => {
-    //     console.log(`Registrando en API: ${row.innerText}`);
-    // })
+	// log en consola del id de cada fila
+	const rows = table.getData();
+
+    rows.forEach(row => {
+        console.log(`Registrando en API: ${row.surveyid}`);
+    })
 
 }
 
 exportTable = () => {
+	// Exportación de la tabla a archivo CSV
     let csv = [];
     const rows = table.getData();
 	
