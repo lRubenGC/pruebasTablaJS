@@ -37,6 +37,7 @@ window.onload = () => {
 }
 
 importClipboard = async() => {
+	document.getElementById("errores").innerHTML = "";
     try {
         clipboard = await navigator.clipboard.readText();
     } catch (err) {
@@ -44,13 +45,35 @@ importClipboard = async() => {
     }
     const rows = clipboard.split("\n");
 
-    // Validación: que todas las filas tengan 12 campos
+	// VALIDACIONES
+	const dateFormat = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
     for (let i = 0; i < rows.length; i++) {
 		const row = rows[i].split("\t");
+		
+		// Que todas las filas tengan 12 campos
         if (row.length !== 12) {
-            document.getElementById("label-error-excel").style.display = "inline-block";
+			const error = `<div class="alert alert-danger label-error" role="alert">Formato incorrecto</div>`;
+			document.getElementById("errores").innerHTML += error;
             return;
         }
+
+
+		// Validación: formato de fecha dd/mm/yyyy
+		if (!row[6].match(dateFormat) || !row[7].match(dateFormat)) {
+			const error = `<div class="alert alert-danger label-error" role="alert">Fila ${row[0]} no introducida, formato de fecha inválido</div>`;
+			document.getElementById("errores").innerHTML += error;
+            continue;
+		}
+
+		// Validación: fecha de inicio menor a fecha final
+		const initDate = new Date(row[6]).getTime();
+		const finalDate = new Date(row[7]).getTime();
+		if (initDate > finalDate) {
+			const error = `<div class="alert alert-danger label-error" role="alert">Fila ${row[0]} no introducida, fecha inicial mayor a final</div>`;
+			document.getElementById("errores").innerHTML += error;
+            continue;
+		}
+
 
         object = {
 			"num": row[0],
@@ -67,7 +90,6 @@ importClipboard = async() => {
 			"cod2": row[11],
 		}
 
-		document.getElementById("label-error-excel").style.display = "none";
 
 		let currentData = table.getData();
 		currentData.push(object);
