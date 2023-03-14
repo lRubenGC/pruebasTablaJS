@@ -2,8 +2,8 @@ let data = [];
 let table;
 
 window.onload = () => {
-    document.getElementById("importButton").addEventListener("click", importData);
-    document.getElementById("fileInput").addEventListener("change", importFile);
+    document.getElementById("importButton").addEventListener("click", importClipboard);
+    document.getElementById("fileInput").addEventListener("change", importXLSX);
     document.getElementById("sendToAPI").addEventListener("click", sendToAPI);		
 
 	table = new Tabulator("#tabulator-table", {
@@ -19,9 +19,9 @@ window.onload = () => {
 			tooltip:true,         //show tool tips on cells
 		},
 		columns:[
-			{title:"Num", field:"num", width:70},
+			{title:"Num", field:"num"},
 			{title:"Target", field:"target"},
-			{title:"Remap", field:"remap", width:80},
+			{title:"Remap", field:"remap"},
 			{title:"Nome", field:"nome", width: 300},
 			{title:"SurveyId", field:"surveyid", width:120},
 			{title:"Status", field:"status", width:120},
@@ -36,7 +36,7 @@ window.onload = () => {
 
 }
 
-importData = async() => {
+importClipboard = async() => {
     try {
         clipboard = await navigator.clipboard.readText();
     } catch (err) {
@@ -78,7 +78,7 @@ importData = async() => {
 
 }
 
-importFile = (event) => {
+importXLSX = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onload = (ev) => {
@@ -109,18 +109,17 @@ exportTable = () => {
     const rows = table.getData();
 	
     for (let i = 0; i < rows.length; i++) {
-		console.log(rows[i])
-        
-        // csv.push(rows[i].join(","));
+		const obj = Object.values(rows[i]);        
+        csv.push(obj.join(","));
     }
 
-    const csvFile = new Blob([csv.join("\n")], {type: "text/csv"});
+	const csvFile = new Blob([csv.join("\n")], {type: "text/csv"});
     
     let dw = document.createElement("a");
     dw.download = `forsta_table.csv`;
     dw.href = window.URL.createObjectURL(csvFile);
     dw.style.display = "none";
     document.body.appendChild(dw);
-    // dw.click();
+    dw.click();
     document.body.removeChild(dw);
 }
