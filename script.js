@@ -74,7 +74,7 @@ importClipboard = async() => {
             continue;
 		}
 
-
+		// Añadir fila a la tabla
         object = {
 			"num": row[0],
 			"target": row[1],
@@ -90,11 +90,11 @@ importClipboard = async() => {
 			"cod2": row[11],
 		}
 
-
 		let currentData = table.getData();
 		currentData.push(object);
 		table.setData(currentData);
 		
+		// Activar botón de exportar a CSV
 		document.getElementById("exportToCSV").addEventListener("click", exportTable);
     }
 
