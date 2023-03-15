@@ -1,39 +1,101 @@
 let data = [];
 let table;
+let translations;
 
 window.onload = () => {
+	// Idioma al lanzar la web
+	let fileRoute = './idiomas/es.json';
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', fileRoute, true);
+	xhr.onload = function () {
+		if (xhr.readyState === xhr.DONE) {
+			if (xhr.status === 200) {
+				translations = JSON.parse(xhr.responseText);
+			}
+		}
+	};
+	xhr.send(null);
+
+	// Evento que salta cuando se quiere cambiar el idioma
+	document.getElementById('language-select').addEventListener('change', function() {
+		let language = this.value;
+		let fileRoute = `./idiomas/${language}.json`;
+		let xhr = new XMLHttpRequest();
+		xhr.open('GET', fileRoute, true);
+		xhr.onload = function () {
+			if (xhr.readyState === xhr.DONE) {
+				if (xhr.status === 200) {
+					translations = JSON.parse(xhr.responseText);
+					updateUI(translations);
+				}
+			}
+		};
+		xhr.send(null);
+	});
 	// Activar botones de importación
-    document.getElementById("importButton").addEventListener("click", importClipboard);
+    document.getElementById("import-button").addEventListener("click", importClipboard);
     document.getElementById("fileInput").addEventListener("change", importXLSX);
 
 	// Se crea la tabla con su configuración
-	table = new Tabulator("#tabulator-table", {
-		data,
-		layout:"fitColumns",
-		addRowPos:"top",
-		history:true,             //allow undo and redo actions on the table
-		pagination:"local",       //paginate the data
-		paginationSize:5,
-		paginationCounter:"rows", //display count of paginated rows in footer
-		movableColumns:true,
-		columnDefaults:{
-			tooltip:true,         //show tool tips on cells
-		},
-		columns:[
-			{title:"Num", field:"num"},
-			{title:"Target", field:"target"},
-			{title:"Remap", field:"remap"},
-			{title:"Nome", field:"nome", width: 300},
-			{title:"SurveyId", field:"surveyid", width:120},
-			{title:"Status", field:"status", width:120},
-			{title:"Data inizio", field:"data_inizio", width:120, sorter:"date"},
-			{title:"Data fine", field:"data_fine", width:120, sorter:"date"},
-			{title:"var1", field:"var1"},
-			{title:"cod1", field:"cod1"},
-			{title:"var2", field:"var2"},
-			{title:"cod2", field:"cod2"}
-		],
-	});
+	let intervalId = setInterval(() => {
+		if (translations !== undefined) {
+			clearInterval(intervalId);
+			setTimeout(() => {
+				table = new Tabulator("#tabulator-table", {
+					data,
+					layout:"fitColumns",
+					addRowPos:"top",
+					history:true,             //allow undo and redo actions on the table
+					pagination:"local",       //paginate the data
+					paginationSize:5,
+					paginationCounter:"rows", //display count of paginated rows in footer
+					movableColumns:true,
+					columnDefaults:{
+						tooltip:true,         //show tool tips on cells
+					},
+					locale: true,
+					langs: {
+						"default": {
+							"pagination":{
+								"page_size":"Page Size", //label for the page size select element
+								"page_title":"Show Page",//tooltip text for the numeric page button, appears in front of the page number (eg. "Show Page" will result in a tool tip of "Show Page 1" on the page 1 button)
+								"first":"First", //text for the first page button
+								"first_title":"First Page", //tooltip text for the first page button
+								"last":"Last",
+								"last_title":"Last Page",
+								"prev":"Prev",
+								"prev_title":"Prev Page",
+								"next":"Next",
+								"next_title":"Next Page",
+								"all":"All",
+								"counter":{
+									"showing": "Showing",
+									"of": "of",
+									"rows": "rows",
+									"pages": "pages",
+								}
+							}
+						}
+					},
+					columns:[
+						{title: "Num", field:"num"},
+						{title: "Target", field:"target"},
+						{title: "Remap", field:"remap"},
+						{title: "Nome", field:"nome", width: 300},
+						{title: "SurveyId", field:"surveyid", width:120},
+						{title: translations.titleStatus, field:"status", width:120},
+						{title: translations.titleDateIni, field:"data_inizio", sorter:"date"},
+						{title: translations.titleDateEnd, field:"data_fine", sorter:"date"},
+						{title: "var1", field:"var1"},
+						{title: "cod1", field:"cod1"},
+						{title: "var2", field:"var2"},
+						{title: "cod2", field:"cod2"}
+					],
+				});
+		
+			}, 0);
+		}
+	})
 
 }
 
@@ -58,7 +120,7 @@ importClipboard = async() => {
 		
 		// Que todas las filas tengan 12 campos
         if (row.length !== 12) {
-			const error = `<div id="label-error-formato" class="alert alert-danger" role="alert">Formato incorrecto</div>`;
+			const error = `<div id="label-error-formato" class="alert alert-danger" role="alert"><span id="invalid-format">${translations.invalidFormat}</span></div>`;
 			document.getElementById("error-formato").innerHTML += error;
             return;
         }
@@ -71,7 +133,7 @@ importClipboard = async() => {
 
 		// Formato de fecha dd/mm/yyyy
 		if (!row[6].match(dateFormat) || !row[7].match(dateFormat)) {
-			const error = `<div class="alert alert-danger label-error" role="alert">Fila ${row[0]} no introducida, formato de fecha inválido</div>`;
+			const error = `<div class="alert alert-danger label-error" role="alert">${row[0]}<span class="invalid-date">${translations.invalidDate}</span></div>`;
 			document.getElementById("errores").innerHTML += error;
             continue;
 		}
@@ -80,7 +142,7 @@ importClipboard = async() => {
 		const initDate = new Date(row[6]).getTime();
 		const finalDate = new Date(row[7]).getTime();
 		if (initDate > finalDate) {
-			const error = `<div class="alert alert-danger label-error" role="alert">Fila ${row[0]} no introducida, fecha inicial mayor a final</div>`;
+			const error = `<div class="alert alert-danger label-error" role="alert">${row[0]}<span class="ilogical-date">${translations.ilogicalDate}</span></div>`;
 			document.getElementById("errores").innerHTML += error;
             continue;
 		}
@@ -106,14 +168,14 @@ importClipboard = async() => {
 		table.setData(currentData);
 		
 		// Activar botón Exportar a CSV
-		document.getElementById("exportToCSV").addEventListener("click", exportTable);
+		document.getElementById("export-to-csv").addEventListener("click", exportTable);
 		// Activar botón Send to API
-		document.getElementById("sendToAPI").addEventListener("click", sendToAPI);
+		document.getElementById("send-to-api").addEventListener("click", sendToAPI);
     }
 
 	// Añadir alerta de error de filas vacías si la hay
 	if (emptyRows > 0) {
-		const error = `<div class="alert alert-danger label-error" role="alert">${emptyRows} fila/s no añadidas, surveyId no tiene datos</div>`;
+		const error = `<div class="alert alert-danger label-error" role="alert">${emptyRows} <span class="no-data-survey">${translations.noDataSurvey}</span></div>`;
 		document.getElementById("errores").innerHTML += error;
 	}
 
@@ -167,3 +229,51 @@ exportTable = () => {
     dw.click();
     document.body.removeChild(dw);
 }
+
+updateUI = (translations) => {
+	document.getElementById('header-table').textContent = translations.headerTitle;
+	document.getElementById('header-language').textContent = translations.headerLanguage;
+	document.getElementById('copy-clipboard').textContent = translations.copyClipboard;
+	document.getElementById('import-button').textContent = translations.importButton;
+	document.getElementById('import-excel').textContent = translations.importExcel;
+	document.getElementById('export-to-csv').textContent = translations.exportCSV;
+	document.getElementById('send-to-api').textContent = translations.sendToApi;
+
+	const invalidFormat = document.getElementById('invalid-format');
+	if (invalidFormat) {
+		invalidFormat.textContent = translations.invalidFormat;
+	}
+	
+	const invalidDate = document.getElementsByClassName('invalid-date');
+	if (invalidDate) {
+		for (let i = 0; i < invalidDate.length; i++) {
+			invalidDate[i].textContent = translations.invalidDate;
+		}
+	};
+	
+	const ilogicalDate = document.getElementsByClassName('ilogical-date');
+	if (ilogicalDate) {
+		for (let i = 0; i < invalidDate.length; i++) {
+			if (ilogicalDate[i]) {
+				ilogicalDate[i].textContent = translations.ilogicalDate;
+			}
+		}
+	};
+	
+	const noDataSurvey = document.getElementsByClassName('no-data-survey');
+	if (noDataSurvey) {
+		for (let i = 0; i < invalidDate.length; i++) {
+			if (noDataSurvey[i]) {
+				noDataSurvey[i].textContent = translations.noDataSurvey;
+			}
+		}
+	};
+
+	const status = document.querySelector('div[tabulator-field="status"]').children[0]
+	status.innerText = translations.titleStatus;
+	const initialDate = document.querySelector('div[tabulator-field="data_inizio"]').children[0]
+	initialDate.innerText = translations.titleDateIni;
+	const finalDate = document.querySelector('div[tabulator-field="data_fine"]').children[0]
+	finalDate.innerText = translations.titleDateEnd;
+	console.log(table.getLocale())
+  }

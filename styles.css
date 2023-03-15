@@ -3,6 +3,24 @@ body {
     font-size: 1em;
 }
 
+.header {
+    display: flex;
+    border-bottom: 1px solid grey;
+}
+
+.header > .idiomas {
+    display: flex;
+    width: auto;
+    margin-left: auto;
+    padding-bottom: 20px;
+}
+
+.header > .idiomas > p {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin: 10px;
+}
+
 .inputs {
     margin: 20px 0;
 }
@@ -11,7 +29,7 @@ body {
     font-size: 0.9em;
 }
 
-#importButton {
+#import-button {
     margin: 0 5px 5px 5px;
 }
 

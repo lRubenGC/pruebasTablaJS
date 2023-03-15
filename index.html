@@ -20,28 +20,35 @@
 </head>
 <body>
     <div class="header">
-        <h2>Tabla Datos</h2>
-        <hr>
+        <h2 id="header-table">Tabla Datos</h2>
+        <div class="idiomas">
+            <p id="header-language">Idioma</p>
+            <select name="idiomas" id="language-select" class="form-select">
+                <option value="es">Español</option>
+                <option value="it">Italiano</option>
+                <option value="en">English</option>
+            </select>
+        </div>
     </div>
     <div class="inputs d-flex flex-row justify-content-around">
         <div class="form-group">
-            <label for="dataInput" class="label-import">Pegar desde portapapeles</label>
-            <button id="importButton" class="btn btn-primary">Importar</button>
+            <label id="copy-clipboard" for="dataInput" class="label-import">Pegar desde portapapeles</label>
+            <button id="import-button" class="btn btn-primary">Importar</button>
             <div id="error-formato"></div>
         </div>
     
     
         <div class="form-group">
-            <label for="fileInput" class="form-label label-import">Importar desde archivo Excel</label>
-            <input type="file" id="fileInput" accept=".xlsx, .xls" class="btn"/>
+            <label id="import-excel" for="fileInput" class="form-label label-import">Importar desde archivo Excel</label>
+            <input type="file" id="fileInput" accept=".xlsx, .xls" class="" lang="en"/>
         </div>
     </div>
     
     
     <div class="tabla">
         <div id="tabulator-table"></div>
-        <button id="exportToCSV" class="btn btn-warning mt-2">Exportar a CSV</button>
-        <button id="sendToAPI" class="btn btn-success actions mt-2">Send to API</button>
+        <button id="export-to-csv" class="btn btn-warning mt-2">Exportar a CSV</button>
+        <button id="send-to-api" class="btn btn-success actions mt-2">Send to API</button>
         <div id="errores"></div>
     </div>
 </body>
