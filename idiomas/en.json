@@ -10,5 +10,6 @@
     "invalidDate": "º row not added, invalid date",
     "ilogicalDate": "º row not added, initial date greater than final date",
     "noDataSurvey": "row/s not added, surveyId has no data",
-    "headerHelper": "(Copy table content without header)"
+    "headerHelper": "(Copy table content without header)",
+    "importButtonExcel": "Select file"
 }

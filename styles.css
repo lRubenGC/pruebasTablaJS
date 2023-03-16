@@ -34,8 +34,12 @@ body {
     font-size: 0.9em;
 }
 
-#import-button {
+.import-button {
     margin: 0 5px 5px 5px;
+}
+
+#fileInput {
+    display: none;
 }
 
 .label-import {
@@ -53,11 +57,6 @@ body {
     margin: auto;
     margin-top: 10px;
     width: 40%;
-}
-
-
-#fileInput {
-    width: 350px;
 }
 
 .tabulator-header {

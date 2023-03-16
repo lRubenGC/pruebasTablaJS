@@ -10,5 +10,6 @@
     "invalidDate": "º riga non aggiunta, data non valida",
     "ilogicalDate": "º riga non aggiunta, data iniziale maggiore della data finale",
     "noDataSurvey": "righe non aggiunte, surveyId non ha dati",
-    "headerHelper": "(Copia il contenuto della tabella senza intestazione)"
+    "headerHelper": "(Copia il contenuto della tabella senza intestazione)",
+    "importButtonExcel": "Seleziona file"
 }

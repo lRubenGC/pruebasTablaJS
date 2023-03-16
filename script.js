@@ -40,6 +40,9 @@ window.onload = () => {
 	// Activar botones de importación
     document.getElementById("import-button").addEventListener("click", importClipboard);
     document.getElementById("fileInput").addEventListener("change", importXLSX);
+	document.getElementById("import-excel-file").addEventListener("click", () => {
+		document.getElementById("import-excel").click();
+	})
 
 	// Se crea la tabla con su configuración
 	let intervalId = setInterval(() => {
@@ -298,6 +301,7 @@ updateUI = (translations) => {
 	document.getElementById('copy-clipboard').textContent = translations.copyClipboard;
 	document.getElementById('import-button').textContent = translations.importButton;
 	document.getElementById('import-excel').textContent = translations.importExcel;
+	document.getElementById('import-excel-file').textContent = translations.importButtonExcel;
 	document.getElementById('export-to-csv').textContent = translations.exportCSV;
 	document.getElementById('send-to-api').textContent = translations.sendToApi;
 
@@ -333,4 +337,5 @@ updateUI = (translations) => {
 
 	const headerHelper = document.getElementById("header-helper");
 	headerHelper.textContent = translations.headerHelper;
+
 }

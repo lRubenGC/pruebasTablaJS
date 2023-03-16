@@ -33,7 +33,7 @@
     <div class="inputs d-flex flex-row justify-content-around">
         <div class="form-group">
             <label id="copy-clipboard" for="dataInput" class="label-import">Pegar desde portapapeles</label>
-            <button id="import-button" class="btn btn-primary">Importar</button>
+            <button id="import-button" class="btn btn-primary import-button">Importar</button>
             <span id="header-helper">(Copiar el contenido de la tabla sin la cabecera)</span>
             <div id="error-formato"></div>
         </div>
@@ -41,7 +41,8 @@
     
         <div class="form-group">
             <label id="import-excel" for="fileInput" class="form-label label-import">Importar desde archivo Excel</label>
-            <input type="file" id="fileInput" accept=".xlsx, .xls" class="" lang="en"/>
+            <button id="import-excel-file" class="btn btn-success import-button">Seleccionar archivo</button>
+            <input type="file" id="fileInput" accept=".xlsx, .xls" class="" lang="en" />
         </div>
     </div>
     

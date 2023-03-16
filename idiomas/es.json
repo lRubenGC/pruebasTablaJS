@@ -10,5 +10,6 @@
     "invalidDate": "º fila no introducida, fecha invalida",
     "ilogicalDate": "º fila no introducida, fecha inicial mayor a final",
     "noDataSurvey": "fila/s no añadidas, surveyId no tiene datos",
-    "headerHelper": "(Copiar el contenido de la tabla sin la cabecera)"
+    "headerHelper": "(Copiar el contenido de la tabla sin la cabecera)",
+    "importButtonExcel": "Seleccionar archivo"
 }
