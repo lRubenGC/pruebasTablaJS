@@ -19,6 +19,11 @@ window.onload = () => {
 	// Evento que salta cuando se quiere cambiar el idioma
 	document.getElementById('language-select').addEventListener('change', function() {
 		let language = this.value;
+
+		// Cambiar idioma tabla
+		table.setLocale(language);
+
+		// Cambiar idioma DOM
 		let fileRoute = `./idiomas/${language}.json`;
 		let xhr = new XMLHttpRequest();
 		xhr.open('GET', fileRoute, true);
@@ -56,23 +61,80 @@ window.onload = () => {
 					locale: true,
 					langs: {
 						"default": {
+							"columns": {
+								"status": "Estado",
+								"data_inizio": "Fecha inicial",
+								"data_fine": "Fecha final"
+							},
 							"pagination":{
-								"page_size":"Page Size", //label for the page size select element
-								"page_title":"Show Page",//tooltip text for the numeric page button, appears in front of the page number (eg. "Show Page" will result in a tool tip of "Show Page 1" on the page 1 button)
-								"first":"First", //text for the first page button
-								"first_title":"First Page", //tooltip text for the first page button
+								"page_size":"Tamaño pág.",
+								"page_title":"Mostrar pág.",
+								"first":"Primera",
+								"first_title":"Primera pág.",
+								"last":"Última",
+								"last_title":"Última pág.",
+								"prev":"Anterior",
+								"prev_title":"Pág. Anterior",
+								"next":"Siguiente",
+								"next_title":"Siguiente pág.",
+								"all":"Todas",
+								"counter":{
+									"showing": "Mostrando",
+									"of": "de",
+									"rows": "filas",
+									"pages": "páginas",
+								}
+							}
+						},
+						"en": {
+							"columns": {
+								"status": "Status",
+								"data_inizio": "Initial date",
+								"data_fine": "Final date"
+							},
+							"pagination":{
+								"page_size":"Page size",
+								"page_title":"Show page",
+								"first":"First",
+								"first_title":"First page",
 								"last":"Last",
-								"last_title":"Last Page",
+								"last_title":"Last page",
 								"prev":"Prev",
-								"prev_title":"Prev Page",
+								"prev_title":"Prev page",
 								"next":"Next",
-								"next_title":"Next Page",
+								"next_title":"Next page",
 								"all":"All",
 								"counter":{
 									"showing": "Showing",
 									"of": "of",
 									"rows": "rows",
 									"pages": "pages",
+								}
+							}
+						},
+						"it": {
+							"columns": {
+								"status": "Stato",
+								"data_inizio": "Data inizio",
+								"data_fine": "Data fine"
+							},
+							"pagination":{
+								"page_size":"Dimensioni pag",
+								"page_title":"Mostrar pag.",
+								"first":"Prima",
+								"first_title":"Primera pag.",
+								"last":"Scorsa",
+								"last_title":"Ultima pag.",
+								"prev":"Prec.",
+								"prev_title":"Pag. precedente",
+								"next":"Prossima",
+								"next_title":"Pag. successiva",
+								"all":"Tutta",
+								"counter":{
+									"showing": "Mostrando",
+									"of": "di",
+									"rows": "righe",
+									"pages": "pagine",
 								}
 							}
 						}
@@ -83,9 +145,9 @@ window.onload = () => {
 						{title: "Remap", field:"remap"},
 						{title: "Nome", field:"nome", width: 300},
 						{title: "SurveyId", field:"surveyid", width:120},
-						{title: translations.titleStatus, field:"status", width:120},
-						{title: translations.titleDateIni, field:"data_inizio", sorter:"date"},
-						{title: translations.titleDateEnd, field:"data_fine", sorter:"date"},
+						{title: "Estado", field:"status", width:120},
+						{title: "Fecha inicial", field:"data_inizio", sorter:"date"},
+						{title: "Fecha final", field:"data_fine", sorter:"date"},
 						{title: "var1", field:"var1"},
 						{title: "cod1", field:"cod1"},
 						{title: "var2", field:"var2"},
@@ -268,12 +330,4 @@ updateUI = (translations) => {
 			}
 		}
 	};
-
-	const status = document.querySelector('div[tabulator-field="status"]').children[0]
-	status.innerText = translations.titleStatus;
-	const initialDate = document.querySelector('div[tabulator-field="data_inizio"]').children[0]
-	initialDate.innerText = translations.titleDateIni;
-	const finalDate = document.querySelector('div[tabulator-field="data_fine"]').children[0]
-	finalDate.innerText = translations.titleDateEnd;
-	console.log(table.getLocale())
-  }
+}

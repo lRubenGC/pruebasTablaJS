@@ -9,8 +9,5 @@
     "invalidFormat": "Formato inválido",
     "invalidDate": "º fila no introducida, fecha invalida",
     "ilogicalDate": "º fila no introducida, fecha inicial mayor a final",
-    "noDataSurvey": "fila/s no añadidas, surveyId no tiene datos",
-    "titleStatus": "Estado",
-    "titleDateIni": "Fecha inicial",
-    "titleDateEnd": "Fecha final"
+    "noDataSurvey": "fila/s no añadidas, surveyId no tiene datos"
 }
