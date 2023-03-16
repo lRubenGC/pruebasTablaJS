@@ -330,4 +330,7 @@ updateUI = (translations) => {
 			}
 		}
 	};
+
+	const headerHelper = document.getElementById("header-helper");
+	headerHelper.textContent = translations.headerHelper;
 }

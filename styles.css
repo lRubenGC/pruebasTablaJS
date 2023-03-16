@@ -3,6 +3,11 @@ body {
     font-size: 1em;
 }
 
+#header-helper {
+    display: block;
+    margin-bottom: 10px;
+}
+
 .header {
     display: flex;
     /* border-bottom: 1px solid grey; */
