@@ -5,7 +5,7 @@ body {
 
 .header {
     display: flex;
-    border-bottom: 1px solid grey;
+    /* border-bottom: 1px solid grey; */
 }
 
 .header > .idiomas {
@@ -54,3 +54,17 @@ body {
 #fileInput {
     width: 350px;
 }
+
+.tabulator-header {
+    background-color: #0d6efd !important;
+    padding-bottom: 1px;
+}
+
+.tabulator-row-even {
+    background-color: #efefef !important;
+}
+
+
+/* .tabulator-row-odd {
+    
+} */
